@@ -50,7 +50,7 @@ function generateDynamicQRIS(staticQris, amount, fee = 0) {
   tags = tags.filter((t) => t.tag !== "54");
 
   // 5. Sisipkan tag 54 setelah tag 53
-  let nominal = String(amount + fee);
+  let nominal = String(Number(amount) + Number(fee));
   let nominalTag = { tag: "54", len: nominal.length, val: nominal };
   let idx53 = tags.findIndex((t) => t.tag === "53");
   if (idx53 !== -1) {
