@@ -77,7 +77,7 @@ function generateDynamicQRIS(staticQris, amount, fee = 0) {
   return dynamic;
 }
 
-app.post("/api/generate", authenticateApiKey, async (req, res) => {
+app.post("/api/generate", async (req, res) => {
   const { staticQris, amount, fee } = req.body;
   if (!staticQris || !amount)
     return res.status(400).json({ error: "Missing data" });
@@ -87,20 +87,15 @@ app.post("/api/generate", authenticateApiKey, async (req, res) => {
 });
 
 // Endpoint: upload gambar QR, decode QRIS
-app.post(
-  "/api/parse-image",
-  authenticateApiKey,
-  upload.single("file"),
-  async (req, res) => {
-    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-    try {
-      const qris = await decodeQRFromImage(req.file.buffer);
-      res.json({ qris });
-    } catch (e) {
-      res.status(500).json({ error: "Failed to decode QR" });
-    }
+app.post("/api/parse-image", upload.single("file"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+  try {
+    const qris = await decodeQRFromImage(req.file.buffer);
+    res.json({ qris });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to decode QR" });
   }
-);
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`QRIS backend running on port ${PORT}`));

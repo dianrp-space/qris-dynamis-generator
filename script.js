@@ -2,8 +2,15 @@
 const API_BASE_URL =
   window.location.hostname === "localhost" ? "http://localhost:3001" : ""; // Untuk production, gunakan relative URL (sama domain)
 
-// API Key - bisa dikonfigurasi atau hardcode untuk frontend public
-const API_KEY = "qris_api_key_change_this_to_secure_key"; // Sesuaikan dengan .env backend
+// Ambil API_KEY dari window.env yang di-inject dari env-config.js
+const API_KEY = window.env && window.env.API_KEY ? window.env.API_KEY : "";
+
+// Log warning jika API_KEY tidak ditemukan
+if (!API_KEY) {
+  console.warn(
+    "API_KEY tidak ditemukan. Pastikan file .env memiliki API_KEY yang valid atau env-config.js dimuat dengan benar."
+  );
+}
 
 // Generate QRIS dinamis otomatis
 async function generateQRIS() {
@@ -26,7 +33,6 @@ async function generateQRIS() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
       },
       body: JSON.stringify({ staticQris, amount, fee: 0 }),
     });
@@ -117,9 +123,6 @@ document.getElementById("parseBtn").onclick = async function () {
   formData.append("file", fileInput.files[0]);
   const res = await fetch(`${API_BASE_URL}/api/parse-image`, {
     method: "POST",
-    headers: {
-      "X-API-Key": API_KEY,
-    },
     body: formData,
   });
 
