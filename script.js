@@ -2,16 +2,6 @@
 const API_BASE_URL =
   window.location.hostname === "localhost" ? "http://localhost:3001" : ""; // Untuk production, gunakan relative URL (sama domain)
 
-// Ambil API_KEY dari window.env yang di-inject dari env-config.js
-const API_KEY = window.env && window.env.API_KEY ? window.env.API_KEY : "";
-
-// Log warning jika API_KEY tidak ditemukan
-if (!API_KEY) {
-  console.warn(
-    "API_KEY tidak ditemukan. Pastikan file .env memiliki API_KEY yang valid atau env-config.js dimuat dengan benar."
-  );
-}
-
 // Generate QRIS dinamis otomatis
 async function generateQRIS() {
   const staticQris = document.getElementById("staticQris").value.trim();
