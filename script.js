@@ -6,7 +6,7 @@ const API_BASE_URL =
 async function generateQRIS() {
   const staticQris = document.getElementById("staticQris").value.trim();
   const amount = parseInt(document.getElementById("amount").value, 10) || 0;
-  const loadingIndicator = document.getElementById("loadingIndicator");
+  // loadingIndicator dihapus
   const resultSection = document.querySelector(".result-section");
 
   if (!staticQris) {
@@ -15,8 +15,7 @@ async function generateQRIS() {
     return;
   }
 
-  // Show loading
-  loadingIndicator.style.display = "block";
+  // loadingIndicator dihapus
 
   try {
     const res = await fetch(`${API_BASE_URL}/api/generate`, {
@@ -46,8 +45,7 @@ async function generateQRIS() {
   } catch (error) {
     console.error("Error generating QRIS:", error);
   } finally {
-    // Hide loading
-    loadingIndicator.style.display = "none";
+    // loadingIndicator dihapus
   }
 }
 
